@@ -15,6 +15,7 @@ urlpatterns = [
    
    # Apps
    path('users/', include('users.urls')),
+   path('listings/', include('listing.urls')),
 ]
 
 if settings.DEBUG:
