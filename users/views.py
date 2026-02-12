@@ -10,8 +10,7 @@ from rest_framework.viewsets import GenericViewSet
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
 
-from users.serializers import SignUpSerializer, OTPRequestSerializer, OTPLoginSerializer, UserInfoSerializer, VendorListSerializer
-from users.models import Vendor
+from users.serializers import SignUpSerializer, OTPRequestSerializer, OTPLoginSerializer, UserInfoSerializer
 from users.utils import set_tokens_on_cookie, generate_otp
 from users.tasks import send_otp_sms
 from users.defaults import OTP_EXPIRY_SECONDS
@@ -111,9 +110,3 @@ class UserInfoView(APIView):
             .get(id=request.user.id)
         )
         return Response(UserInfoSerializer(user).data)
-    
-
-class VendorViewSet(ListModelMixin, GenericViewSet):
-    queryset = Vendor.objects.select_related("user").all()
-    serializer_class = VendorListSerializer
-    pagination_class = None

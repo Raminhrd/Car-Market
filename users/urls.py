@@ -1,11 +1,6 @@
 from django.urls import path
 from users import views
-from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenRefreshView
-
-
-router = DefaultRouter()
-router.register("vendors", views.VendorViewSet, basename="vendors")
 
 
 urlpatterns = [
@@ -18,5 +13,3 @@ urlpatterns = [
 
     path('info/', views.UserInfoView.as_view()),
 ]
-
-urlpatterns += router.urls

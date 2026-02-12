@@ -2,7 +2,6 @@ from django.contrib.auth import authenticate, get_user_model
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from .utils import normalize_phone_number
-from .models import Vendor
 
 User = get_user_model()
 
@@ -53,10 +52,3 @@ class UserInfoSerializer(serializers.ModelSerializer):
             "role",
             "is_phone_verified",
         )
-
-
-class VendorListSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Vendor
-        fields = ["id", "name", "profile_image"]

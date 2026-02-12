@@ -84,10 +84,3 @@ class User(AbstractUser):
         if not self.is_phone_verified:
             self.is_phone_verified = True
             self.save(update_fields=("is_phone_verified",))
-
-
-class Vendor(models.Model):
-    profile_image = models.ImageField(null=True, blank=True)
-    name = models.CharField(max_length=50)
-    description = models.TextField(max_length=100)
-    user = models.OneToOneField(to= User, on_delete=models.CASCADE, related_name="vendor", null=True, blank=True)
