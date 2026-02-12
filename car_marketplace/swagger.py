@@ -7,10 +7,10 @@ schema_view = get_schema_view(
    openapi.Info(
       title="Car Market API",
       default_version='v1',
-      description="API documentation for the Foodkadeh Backend",
+      description="API documentation for the Car Market Place Backend",
       terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="contact@car_market.local"),
-      license=openapi.License(name="BSD License"),
+      contact=openapi.Contact(email="monkey@monkeybusiness.com"),
+      license=openapi.License(name="fake monkey"),
    ),
    public=True,
    permission_classes=[permissions.AllowAny],
