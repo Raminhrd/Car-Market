@@ -42,8 +42,7 @@ class User(AbstractUser):
 
     phone_number = PhoneNumberField(
         verbose_name=_("phone number"),
-        default="",
-        blank=True,
+        blank=False,
         unique=True,
         db_index=True,
         region="IR",
@@ -54,16 +53,15 @@ class User(AbstractUser):
         ACTIVE = 2, "Active"
         BANNED = 3, "Banned"
 
-    status = models.IntegerField(choices=StatusChoices.choices, default=StatusChoices.PENDING)
+    status = models.IntegerField(choices=StatusChoices.choices, default=StatusChoices.ACTIVE)
 
     gender = models.IntegerField(choices=GenderChoices.choices, null=True, blank=True)
     is_phone_verified = models.BooleanField(_("is phone verified"), default=False)
-    role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True, blank=True, related_name="users")
 
     objects = UserManager()  # type: ignore
 
     USERNAME_FIELD = "phone_number"
-    REQUIRED_FIELDS = ["first_name", "last_name", "email"]
+    REQUIRED_FIELDS = []
     normalize_fields = ["first_name", "last_name"]
 
     class Meta:
@@ -72,10 +70,8 @@ class User(AbstractUser):
 
     @property
     def full_name(self) -> str:
-        return f"{self.first_name} {self.last_name}"
-
-    def __str__(self) -> str:
-        return f"{self.first_name} {self.last_name} ({self.phone_number})"
+        name = f"{self.first_name or ''} {self.last_name or ''}".strip()
+        return name if name else str(self.phone_number)
     
     def verify_phone(self):
         """
