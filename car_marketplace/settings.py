@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'django_filters',
     'corsheaders',
-    #'drf_yasg',   
+    'drf_yasg',   
 ]
 
 MIDDLEWARE = [
