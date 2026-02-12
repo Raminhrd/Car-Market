@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     
     # apps
     'users',
+    'listing',
     
     # tools
     'phonenumber_field',
