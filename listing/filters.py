@@ -13,7 +13,7 @@ class ListingFilter(django_filters.FilterSet):
     class Meta:
         model = Listing
         fields = [
-            "make",
+            "brand",
             "model",
             "city",
             "fuel",

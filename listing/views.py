@@ -39,17 +39,19 @@ class ListingViewSet(
             Listing.objects
             .select_related("owner")
             .prefetch_related("images")
-            .annotate(views_count=Count("views__user", distinct=True))
+            .annotate(views_count=Count("views"))
             .order_by("-created_at")
         )
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         user = request.user if request.user.is_authenticated else None
-    
+
         if user != instance.owner:
             ListingView.objects.create(listing=instance, user=user)
-    
+
+        instance = self.get_queryset().get(pk=instance.pk)
+
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 

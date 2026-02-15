@@ -36,8 +36,7 @@ class Listing(models.Model):
         related_name="listings",
         db_index=True,
     )
-
-    make = models.CharField(max_length=40)
+    brand = models.CharField(max_length=40)
     model = models.CharField(max_length=60)
     trim = models.CharField(max_length=80, blank=True, default="")
 

@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from .models import Listing
+from .models import Listing, ListingImage
+
+
+class ListingImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ListingImage
+        fields = ("id", "image")
 
 
 class ListingListSerializer(serializers.ModelSerializer):
@@ -27,11 +33,9 @@ class ListingListSerializer(serializers.ModelSerializer):
 
 class ListingDetailSerializer(serializers.ModelSerializer):
     owner_name = serializers.CharField(source="owner.full_name", read_only=True)
-    listing_main_image = serializers.ImageField(
-        source="main_image_file",
-        read_only=True
-    )
-    images = serializers.SerializerMethodField()
+    listing_main_image = serializers.ImageField(source="main_image_file",read_only=True)
+    views_count = serializers.IntegerField(read_only=True)
+    images = ListingImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = Listing
