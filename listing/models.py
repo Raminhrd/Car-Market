@@ -89,3 +89,9 @@ class ListingPriceHistory(models.Model):
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="price_history")
     price = models.BigIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class ListingView(models.Model):
+    listing = models.ForeignKey(Listing,on_delete=models.CASCADE,related_name="views")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,null=True,blank=True,on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
