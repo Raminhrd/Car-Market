@@ -62,6 +62,17 @@ class Listing(models.Model):
 
     def __str__(self):
         return f"{self.make} {self.model} {self.year} - {self.price}"
+    
+    @property
+    def main_image(self):
+        return self.images.order_by("id").first()
+        
+    @property
+    def main_image_file(self):
+        return getattr(self.main_image, "image", None)
+    
+    def __str__(self):
+        return f"{self.name}"
 
 
 class ListingImage(models.Model):
