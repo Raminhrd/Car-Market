@@ -1,7 +1,15 @@
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
+from django.db.models import Count
+from django.db.models.functions import Coalesce
 
+
+class ListingQuerySet(models.QuerySet):
+    def with_views_count(self):
+        return self.annotate(
+            views_count=Coalesce(Count("views"), 0)
+        )
 
 class Listing(models.Model):
     class Status(models.IntegerChoices):
@@ -59,6 +67,7 @@ class Listing(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     published_at = models.DateTimeField(null=True, blank=True)
+    objects = ListingQuerySet.as_manager()
 
     def __str__(self):
         return f"{self.make} {self.model} {self.year} - {self.price}"
