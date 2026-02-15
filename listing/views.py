@@ -1,5 +1,6 @@
 from datetime import timedelta
 from django.utils import timezone
+from django.db.models import Count
 
 from rest_framework import mixins, viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -38,22 +39,17 @@ class ListingViewSet(
             Listing.objects
             .select_related("owner")
             .prefetch_related("images")
-            .with_views_count()
+            .annotate(views_count=Count("views__user", distinct=True))
+            .order_by("-created_at")
         )
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        if request.user.is_authenticated and request.user != instance.owner:
-            since = timezone.now() - timedelta(hours=24)
-
-            already_viewed = ListingView.objects.filter(
-                listing=instance,
-                user=request.user,
-                created_at__gte=since,
-            ).exists()
-
-            if not already_viewed:
-                ListingView.objects.create(listing=instance, user=request.user)
-
+        user = request.user if request.user.is_authenticated else None
+    
+        if user != instance.owner:
+            ListingView.objects.create(listing=instance, user=user)
+    
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
+
