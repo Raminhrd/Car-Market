@@ -1,14 +1,25 @@
-from rest_framework.permissions import BasePermission, SAFE_METHODS
+# permissions.py
+from rest_framework.permissions import BasePermission
+from django.utils import timezone
+from datetime import timedelta
 
-from listing.models import Listing
 
+class IsOwnerAndEditable(BasePermission):
 
-class IsOwnerOrReadOnlyPublished(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        # safe methods allowed for everyone
+        if request.method in ("GET", "HEAD", "OPTIONS"):
+            return True
 
-    def has_object_permission(self, request, view, obj: Listing):
-        if request.method in SAFE_METHODS:
-            if obj.status == Listing.Status.PUBLISHED:
-                return True
-            return request.user.is_authenticated and obj.owner_id == request.user.id
+        if obj.owner != request.user:
+            return False
 
-        return request.user.is_authenticated and obj.owner_id == request.user.id
+        # DELETE always allowed for owner
+        if request.method == "DELETE":
+            return True
+
+        # PATCH/PUT allowed only within 48h
+        if request.method in ("PUT", "PATCH"):
+            return obj.created_at >= timezone.now() - timedelta(hours=48)
+
+        return False
