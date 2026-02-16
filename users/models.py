@@ -80,3 +80,9 @@ class User(AbstractUser):
         if not self.is_phone_verified:
             self.is_phone_verified = True
             self.save(update_fields=("is_phone_verified",))
+    
+    def __str__(self) -> str:
+        try:
+            return str(self.phone_number.as_e164)
+        except Exception:
+            return str(self.phone_number)
