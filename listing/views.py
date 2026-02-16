@@ -48,7 +48,6 @@ class ListingViewSet(
         instance = self.get_object()
         user = request.user if request.user.is_authenticated else None
 
-        # Owner view shouldn't count
         if user != instance.owner:
             ListingView.objects.create(listing=instance, user=user)
 
@@ -56,4 +55,3 @@ class ListingViewSet(
 
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
-
