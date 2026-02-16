@@ -43,10 +43,12 @@ class ListingViewSet(
             .order_by("-created_at")
         )
 
+
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         user = request.user if request.user.is_authenticated else None
 
+        # Owner view shouldn't count
         if user != instance.owner:
             ListingView.objects.create(listing=instance, user=user)
 
