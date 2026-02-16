@@ -1,6 +1,8 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from datetime import timedelta
+from users.defaults import ACCESS_TOKEN_LIFETIME, REFRESH_TOKEN_LIFETIME
 
 load_dotenv()
 
@@ -100,6 +102,11 @@ REST_FRAMEWORK = {
     "COERCE_DECIMAL_TO_STRING": False,
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=ACCESS_TOKEN_LIFETIME),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=REFRESH_TOKEN_LIFETIME),
 }
 
 
