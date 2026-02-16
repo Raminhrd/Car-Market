@@ -69,7 +69,7 @@ class Listing(models.Model):
     objects = ListingQuerySet.as_manager()
 
     def __str__(self):
-        return f"{self.make} {self.model} {self.year} - {self.price}"
+        return f"{self.brand} {self.model} {self.year} - {self.price}"
     
     @property
     def main_image(self):
@@ -80,7 +80,7 @@ class Listing(models.Model):
         return getattr(self.main_image, "image", None)
     
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.title}"
 
 
 class ListingImage(models.Model):
